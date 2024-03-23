@@ -1,0 +1,35 @@
+function GeneralToTracking() {
+
+  /*
+  This code defines the Source Google Sheet Doc and the Target Google Sheet Doc. These are two
+  different google sheet docs. They are NOT 2 sheets in the same google sheet doc.
+  */
+
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var target = SpreadsheetApp.openById("1yxfpC7Yag9GAkoe5BUjjg12cUhGmGr5ryeGl87JmZqU");
+
+  /*
+  This code is to pick specific sheets within the Source & Target Sheet.
+     Source Google Sheet = "New Stuff"
+     Target Google Sheet = "Archive"
+  */
+
+  var source_sheet = ss.getActiveSheet();
+  var target_sheet = target.getSheetByName("Archive"); // ++++ TO DO: Need to present the user with a list of tabs in the Target doc. Prompt w/ Radio Buttons. ++++
+
+  /* 
+  This code determines the from-range and the to-range to copy & says where to put it in the Target.
+  */
+
+  var source_range = source_sheet.getActiveRange();
+  var last_row = target_sheet.getLastRow();
+
+//  source_range.copyTo(target_range);
+
+  if (last_row > 0) target_sheet.insertRowAfter(last_row);
+  var target_range = target_sheet.getRange(last_row + 1, 1);
+  var copiedsheet = source_sheet.copyTo(target);
+  copiedsheet.getRange(source_range.getA1Notation()).copyTo(target_range);
+  target.deleteSheet(copiedsheet);
+
+}
